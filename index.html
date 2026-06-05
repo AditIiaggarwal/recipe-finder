@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe Information Explorer</title>
+    <style>
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#f4efe4;
+    margin:0;
+    padding:0;
+}
+
+/* Header */
+
+h1{
+    background:#1f2937;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin:0;
+    font: size 29px;
+    letter-spacing:1px;
+}
+
+/* Subtitle */
+
+body > p{
+    text-align:center;
+    color:#666;
+    margin:15px 0;
+    font-size:15px;
+}
+
+/* Button Section */
+
+div:first-of-type{
+    background:#e7dcc5;
+    padding:15px;
+    text-align:center;
+}
+
+button{
+    padding:10px 18px;
+    margin:5px;
+    border:none;
+    border-radius:6px;
+    background:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:14px;
+}
+
+button:hover{
+    background:#111827;
+    color:white;
+    transform:translateY(-2px);
+}
+
+/* Recipe Card */
+
+#result{
+    width:70%;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    text-align:center;
+}
+
+#result h2{
+    font-size:30px;
+    margin-bottom:15px;
+    color:#222;
+}
+
+/* Image */
+
+#result img{
+    width:250px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom:15px;
+}
+
+/* Text */
+
+#result p{
+    font-size:15px;
+    line-height:1.6;
+    text-align:left;
+    color:#444;
+}
+
+b{
+    color:#222;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    #result{
+        width:90%;
+        padding:20px;
+    }
+
+    #result img{
+        width:200px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    button{
+        display:block;
+        width:90%;
+        margin:8px auto;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<h1>🍽️ Recipe Information Explorer</h1>
+<p style="text-align:center;color:#666;padding:15px;">
+Explore delicious recipes from around the world
+</p>
+
+<div>
+    <div>
+    <button onclick="searchRecipe('Pizza')">PIZZA</button>
+    <button onclick="searchRecipe('Burger')">BURGER</button>
+    <button onclick="searchRecipe('Noodles')"> NOODLES</button>
+    <button onclick="searchRecipe('Tacos')"> TACOS</button>
+    <button onclick="searchRecipe('Pancakes')">PANCAKES</button>
+</div>
+</div>
+
+<div id="result"></div>
+
+<script>
+    async function searchRecipe(recipeName){
+
+    const response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`
+    );
+
+    const data = await response.json();
+
+    const meal = data.meals[0];
+
+    document.getElementById("result").innerHTML = `
+        <h2>${meal.strMeal}</h2>
+        <img src="${meal.strMealThumb}" width="300">
+
+        <p><b>Category:</b> ${meal.strCategory}</p>
+
+        <p><b>Cuisine:</b> ${meal.strArea}</p>
+
+        <p>${meal.strInstructions.slice(0, 6000)}...</p>
+    `;
+}
+
+</script>
+
+</body>
+</html>
